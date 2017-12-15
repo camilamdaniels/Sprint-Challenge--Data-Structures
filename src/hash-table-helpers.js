@@ -33,6 +33,10 @@ class LimitedArray {
     this.checkLimit(index);
     this.storage[index] = value;
   }
+
+  incrementLength() {
+    this.storage.length++;
+  }
 }
 /* eslint-disable no-bitwise, operator-assignment */
 // This is hash function you'll be using to hash keys
@@ -49,7 +53,112 @@ const getIndexBelowMax = (str, max) => {
   return hash % max;
 };
 
+/* eslint-disable class-methods-use-this */
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    // Do not modify anything inside of the constructor
+  }
+  
+  addToTail(key, value) {
+    const newVal = {};
+    newVal.value = [key, value];
+    newVal.next = null;
+
+    if (this.head === null && this.tail === null) {
+      this.head = newVal;
+      this.tail = newVal;
+      this.head.next = this.tail;
+      this.tail.next = null;
+    } else if (this.head !== null && this.tail !== null) { 
+      this.head.next = this.tail;
+      this.head.next.next = newVal;
+      this.tail = newVal;
+      this.tail.next = null;
+    }
+    
+  }
+  
+  removeHead() {
+    const removed = this.head;
+    if (this.head !== null) {
+      this.head = this.head.next;
+    } else if (this.head === null) {
+      return null;
+    }
+    return removed.value;
+  }
+  
+  contains(key) {
+    let isFound = false;
+    let checker = this.head;
+    while (checker) {
+      if (checker.value[0] === key) {
+        isFound = true;
+      }
+      checker = checker.next;
+    }
+    return isFound;
+  }
+
+  retrieveValue(key) {
+    let value;
+    let checker = this.head;
+    while (checker) {
+      if (checker.value[0] === key) {
+        value = checker.value[1];
+      }
+      checker = checker.next;
+    }
+    return value;
+  }
+
+  size() {
+    let count;
+    let checker = this.head;
+    while (checker) {
+      checker = checker.next;
+      count++;
+    }
+    return count;
+  }
+
+}
+
+const test = new LinkedList();
+
+// test.addToTail(1);
+// console.log(test.tail.value);
+// test.addToTail(2);
+// console.log(test.tail.value);
+
+// test.addToTail(1);
+// console.log(test.head.value);
+// test.addToTail(2);
+// console.log(test.head.value);
+
+// test.addToTail(1);
+// test.addToTail(2);
+// test.addToTail('hello');
+// test.addToTail(true);
+// console.log(test.contains('hello'));
+// console.log(test.contains('asdf'));
+
+// test.addToTail(1);
+// test.addToTail(2);
+// console.log(test.head.value);
+// test.removeHead();
+// console.log(test.head.value);
+// test.removeHead();
+// console.log(test.head);
+
+// test.addToTail(1);
+// console.log(test.removeHead());
+
+
 module.exports = {
+  LinkedList,
   LimitedArray,
   getIndexBelowMax,
 };
