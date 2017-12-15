@@ -7,12 +7,12 @@ class LimitedArray {
     this.limit = limit;
   }
 
-  checkLimit(index) {
-    if (typeof index !== 'number') throw new Error('The supplied index needs to be a number');
-    if (this.limit <= index) {
-      throw new Error('The supplied index lies out of the array\'s bounds');
-    }
-  }
+  // checkLimit(index) {
+  //   if (typeof index !== 'number') throw new Error('The supplied index needs to be a number');
+  //   if (this.limit <= index) {
+  //     throw new Error('The supplied index lies out of the array\'s bounds');
+  //   }
+  // }
 
   each(cb) {
     for (let i = 0; i < this.storage.length; i++) {
@@ -21,8 +21,8 @@ class LimitedArray {
   }
   // Use this getter function to fetch elements from this class
   get(index) {
-    this.checkLimit(index);
-    return this.storage[index];
+    // this.checkLimit(index);
+    if (!(this.limit <= index)) return this.storage[index];
   }
 
   get length() {
@@ -30,8 +30,8 @@ class LimitedArray {
   }
   // Use this setter function to add elements to this class
   set(index, value) {
-    this.checkLimit(index);
-    this.storage[index] = value;
+    // this.checkLimit(index);
+    if (!(this.limit <= index)) return this.storage[index] = value;
   }
 
   incrementLength() {
@@ -60,26 +60,24 @@ class LinkedList {
     this.tail = null;
     // Do not modify anything inside of the constructor
   }
-  
+
   addToTail(key, value) {
     const newVal = {};
     newVal.value = [key, value];
     newVal.next = null;
-
     if (this.head === null && this.tail === null) {
       this.head = newVal;
       this.tail = newVal;
       this.head.next = this.tail;
       this.tail.next = null;
-    } else if (this.head !== null && this.tail !== null) { 
+    } else if (this.head !== null && this.tail !== null) {
       this.head.next = this.tail;
       this.head.next.next = newVal;
       this.tail = newVal;
       this.tail.next = null;
     }
-    
   }
-  
+
   removeHead() {
     const removed = this.head;
     if (this.head !== null) {
@@ -89,7 +87,7 @@ class LinkedList {
     }
     return removed.value;
   }
-  
+
   contains(key) {
     let isFound = false;
     let checker = this.head;
@@ -123,10 +121,9 @@ class LinkedList {
     }
     return count;
   }
-
 }
 
-const test = new LinkedList();
+// const test = new LinkedList();
 
 // test.addToTail(1);
 // console.log(test.tail.value);

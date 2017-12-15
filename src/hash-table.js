@@ -15,23 +15,32 @@ class HashTable {
   insert(key, value) {
     const newLL = new LinkedList();
     newLL.addToTail(key, value);
-
+    const isList = this.storage.get(getIndexBelowMax(key, this.limit)) instanceof LinkedList;
     if (!isNaN(key) && key < this.limit) {
       this.storage.set(key, newLL);
-      this.storage.incrementLength();
-    } else if (typeof this.storage.get(getIndexBelowMax(key, this.limit)) === 'LinkedList') {
+      // this.storage.incrementLength();
+    } else if (isList && this.storage.get(getIndexBelowMax(key, this.limit)) !== null && this.storage.get(getIndexBelowMax(key, this.limit)) !== undefined) {
       // const current = this.storage.get(getIndexBelowMax(key), this.limit);
-      console.log('working1');
-      console.log(this.storage.get(getIndexBelowMax(key, this.limit)).retrieveValue(key));
-      this.storage.get(getIndexBelowMax(key), this.limit).addToTail(key, newLL);
-      console.log(this.storage.get(getIndexBelowMax(key, this.limit)).retrieveValue(key));
-      this.storage.incrementLength();
+      // console.log('working1');
+      const ll = this.storage.get(getIndexBelowMax(key, this.limit));
+      // console.log(ll);
+      // console.log(this.storage.get(getIndexBelowMax(key, this.limit)));
+      // console.log(this.storage.get(getIndexBelowMax(key, this.limit)).retrieveValue(key));
+      ll.addToTail(key, value);
+      // console.log(this.storage.get(getIndexBelowMax(key, this.limit)).retrieveValue(key));
+      // this.storage.incrementLength();
     } else {
-      console.log('working2');
+      // console.log('working2');
       // console.log(getIndexBelowMax(key, this.limit));
       this.storage.set(getIndexBelowMax(key, this.limit), newLL);
-      this.storage.incrementLength();
+      // this.storage.incrementLength();
     }
+    // console.log(this.storage.length);
+    // console.log(this.limit);
+    this.setLimit();
+  }
+
+  setLimit() {
     if (this.storage.length >= (0.75 * this.limit)) {
       this.limit *= 2;
     }
@@ -51,21 +60,18 @@ class HashTable {
   retrieve(key) {
     if (!isNaN(key)) {
       return this.storage.get(key).retrieveValue(key);
-    } 
+    }
     // console.log(this.storage.get(getIndexBelowMax(key, this.limit)).contains(key));
     if (this.storage.get(getIndexBelowMax(key, this.limit)) !== undefined && this.storage.get(getIndexBelowMax(key, this.limit)).contains(key)) {
       return this.storage.get(getIndexBelowMax(key, this.limit)).retrieveValue(key);
-    } 
+    }
     return undefined;
-    // if (this.storage.get(getIndexBelowMax(key, this.limit)) !== undefined) {
-    //   return this.storage.get(getIndexBelowMax(key, this.limit)).value[1];  
-    // }
   }
 }
 
 module.exports = HashTable;
-
 const test = new HashTable();
+
 // console.log(Object.getPrototypeOf(test).hasOwnProperty('insert'));
 // console.log(Object.getPrototypeOf(test).hasOwnProperty('remove'));
 // console.log(Object.getPrototypeOf(test).hasOwnProperty('retrieve'));
@@ -79,7 +85,6 @@ const test = new HashTable();
 // console.log(test.retrieve('Ben'));
 // test.remove('Ben');
 // console.log(test.retrieve('Ben'));
-
 // console.log(test.retrieve('Sean'));
 // console.log(test.remove('Sean'));
 
@@ -91,9 +96,28 @@ const test = new HashTable();
 // test.insert(0, 'First Value');
 // test.insert(0, 'Second Value');
 // console.log(test.retrieve(0));
+// test.insert('B', 'First Value');
+// test.insert('HI!', 'Second Value');
+// console.log(test.retrieve('B'));
+// console.log(test.retrieve('HI!'));
 
-test.insert('B', 'First Value');
-test.insert('HI!', 'Second Value');
-console.log(test.retrieve('B'));
-console.log(test.retrieve('HI!'));
-
+// console.log(test.storage.length);
+// test.insert('a', true);
+// test.insert('b', true);
+// test.insert('c', true);
+// test.insert('d', true);
+// test.insert('e', true);
+// test.insert('f', true);
+// test.insert('g', true);
+// console.log('limit: '+test.limit);
+// console.log(test.storage.length);
+// test.insert('h', true);
+// test.insert('i', true);
+// test.insert('j', true);
+// test.insert('k', true);
+// test.insert('l', true);
+// test.insert('m', true);
+// test.insert('n', true);
+// test.insert('o', true);
+// console.log('limit: '+test.limit);
+// console.log(test.storage.length);
